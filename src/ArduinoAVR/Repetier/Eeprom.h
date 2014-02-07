@@ -238,7 +238,17 @@ public:
 #if EEPROM_MODE!=0
         return HAL::eprGetFloat(EPR_DELTA_DIAGONAL_ROD_LENGTH);
 #else
-        return DELTA_DIAGONAL_ROD;
+        return Printer::deltaDiagonalRodLength;
+#endif
+    }
+    static inline void setDeltaDiagonalRodLength(float length) {
+#if EEPROM_MODE!=0
+        HAL::eprSetFloat(EPR_DELTA_DIAGONAL_ROD_LENGTH,length);
+        uint8_t newcheck = computeChecksum();
+        if(newcheck!=HAL::eprGetByte(EPR_INTEGRITY_BYTE))
+            HAL::eprSetByte(EPR_INTEGRITY_BYTE,newcheck);
+#else
+        Printer::deltaDiagonalRodLength = length;
 #endif
     }
     static inline int16_t deltaSegmentsPerSecondPrint() {
@@ -254,28 +264,38 @@ public:
 #if EEPROM_MODE!=0
         return HAL::eprGetFloat(EPR_DELTA_HORIZONTAL_RADIUS);
 #else
-        return DELTA_RADIUS;
+        return Printer::deltaHorizontalRadius;
+#endif
+    }
+    static inline void setDeltaHorizontalRadius(float radius) {
+#if EEPROM_MODE!=0
+        HAL::eprSetFloat(EPR_DELTA_HORIZONTAL_RADIUS,radius);
+        uint8_t newcheck = computeChecksum();
+        if(newcheck!=HAL::eprGetByte(EPR_INTEGRITY_BYTE))
+            HAL::eprSetByte(EPR_INTEGRITY_BYTE,newcheck);
+#else
+        Printer::deltaHorizontalRadius = radius;
 #endif
     }
     static inline int16_t deltaTowerXOffsetSteps() {
 #if EEPROM_MODE!=0
         return HAL::eprGetInt16(EPR_DELTA_TOWERX_OFFSET_STEPS);
 #else
-        return DELTA_X_ENDSTOP_OFFSET_STEPS;
+        return Printer::deltaTowerXOffsetSteps;
 #endif
     }
     static inline int16_t deltaTowerYOffsetSteps() {
 #if EEPROM_MODE!=0
         return HAL::eprGetInt16(EPR_DELTA_TOWERY_OFFSET_STEPS);
 #else
-        return DELTA_Y_ENDSTOP_OFFSET_STEPS;
+        return Printer::deltaTowerYOffsetSteps;
 #endif
     }
     static inline int16_t deltaTowerZOffsetSteps() {
 #if EEPROM_MODE!=0
         return HAL::eprGetInt16(EPR_DELTA_TOWERZ_OFFSET_STEPS);
 #else
-        return DELTA_Z_ENDSTOP_OFFSET_STEPS;
+        return Printer::deltaTowerZOffsetSteps;
 #endif
     }
     static inline void setDeltaTowerXOffsetSteps(int16_t steps) {
@@ -284,6 +304,8 @@ public:
         uint8_t newcheck = computeChecksum();
         if(newcheck!=HAL::eprGetByte(EPR_INTEGRITY_BYTE))
             HAL::eprSetByte(EPR_INTEGRITY_BYTE,newcheck);
+#else
+        Printer::deltaTowerXOffsetSteps = steps;
 #endif
     }
     static inline void setDeltaTowerYOffsetSteps(int16_t steps) {
@@ -292,6 +314,8 @@ public:
         uint8_t newcheck = computeChecksum();
         if(newcheck!=HAL::eprGetByte(EPR_INTEGRITY_BYTE))
             HAL::eprSetByte(EPR_INTEGRITY_BYTE,newcheck);
+#else
+        Printer::deltaTowerYOffsetSteps = steps;
 #endif
     }
     static inline void setDeltaTowerZOffsetSteps(int16_t steps) {
@@ -300,6 +324,8 @@ public:
         uint8_t newcheck = computeChecksum();
         if(newcheck!=HAL::eprGetByte(EPR_INTEGRITY_BYTE))
             HAL::eprSetByte(EPR_INTEGRITY_BYTE,newcheck);
+#else
+        Printer::deltaTowerZOffsetSteps = steps;
 #endif
     }
     static inline float deltaAlphaA() {

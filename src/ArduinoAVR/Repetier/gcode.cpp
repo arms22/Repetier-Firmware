@@ -159,13 +159,6 @@ void GCode::checkAndPushCommand()
         {
             Commands::emergencyStop();
         }
-#ifdef DEBUG_COM_ERRORS
-        if(M==666)
-        {
-            lastLineNumber++;
-            return;
-        }
-#endif // DEBUG_COM_ERRORS
     }
     if(hasN())
     {

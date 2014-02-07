@@ -84,6 +84,11 @@ public:
     static long deltaBPosYSteps;
     static long deltaCPosXSteps;
     static long deltaCPosYSteps;
+    static float deltaDiagonalRodLength;
+    static float deltaHorizontalRadius;
+    static long deltaTowerXoffsetSteps;
+    static long deltaTowerYoffsetSteps;
+    static long deltaTowerZoffsetSteps;
 #ifdef DEBUG_DELTA_REALPOS
     static long realDeltaPositionSteps[3];
 #endif

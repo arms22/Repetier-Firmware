@@ -79,6 +79,11 @@ long Printer::deltaBPosXSteps;
 long Printer::deltaBPosYSteps;
 long Printer::deltaCPosXSteps;
 long Printer::deltaCPosYSteps;
+float Printer::deltaDiagonalRodLength;
+float Printer::deltaHorizontalRadius;
+long Printer::deltaTowerXoffsetSteps;
+long Printer::deltaTowerYoffsetSteps;
+long Printer::deltaTowerZoffsetSteps;
 #ifdef DEBUG_DELTA_REALPOS
 long Printer::realDeltaPositionSteps[3];
 #endif

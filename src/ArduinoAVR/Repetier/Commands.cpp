@@ -1435,7 +1435,46 @@ void Commands::executeGCode(GCode *com)
                 Com::printF(PSTR("Rem:"),PrintLine::cur->stepsRemaining);
                 Com::printFLN(PSTR("Int:"),Printer::interval);
             }
+            break;
 #endif // DEBUG_QUEUE_MOVE
+#if DRIVE_SYSTEM==3
+        case 665: // set arm solution specific settings: Delta - I<arm length> R<arm radius> Z<max height>
+            if(com->hasZ())
+            {
+                Printer::zLength = com->Z;
+            }
+            if(com->hasR())
+            {
+                EEPROM::setDeltaHorizontalRadius(com->R);
+            }
+            if(com->hasI())
+            {
+                EEPROM::setDeltaDiagonalRodLength(com->I);
+            }
+            Printer::updateDerivedParameter();
+            Com::printFLN(Com::tEPRZMaxLength,Printer::zLength);
+            Com::printFLN(Com::tEPRDiagonalRodLength,EEPROM::deltaDiagonalRodLength());
+            Com::printFLN(Com::tEPRHorizontalRadius,EEPROM::deltaHorizontalRadius());
+            break;
+        case 666: // On a delta sets trim values for the endstops.
+            if(com->hasX())
+            {
+                EEPROM::setDeltaTowerXOffsetSteps(lround(com->X * Printer::axisStepsPerMM[X_AXIS]));
+            }
+            if(com->hasY())
+            {
+                EEPROM::setDeltaTowerYOffsetSteps(lround(com->Y * Printer::axisStepsPerMM[Y_AXIS]));
+            }
+            if(com->hasZ())
+            {
+                EEPROM::setDeltaTowerZOffsetSteps(lround(com->Z * Printer::axisStepsPerMM[Z_AXIS]));
+            }
+            Printer::updateDerivedParameter();
+            Com::printFLN(Com::tTower1,EEPROM::deltaTowerXOffsetSteps());
+            Com::printFLN(Com::tTower2,EEPROM::deltaTowerYOffsetSteps());
+            Com::printFLN(Com::tTower3,EEPROM::deltaTowerZOffsetSteps());
+            break;
+#endif
         }
     }
     else if(com->hasT())      // Process T code
