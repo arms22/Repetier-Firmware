@@ -146,6 +146,12 @@ public:
     static float backlashZ;
     static uint8_t backlashDir;
 #endif
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    static float zThreadLeadPitch;
+    static float zThreadLeadCorrAmount;
+    static float zThreadLeadCorrPhase;
+    static float zThreadLeadCurPhaseAmount;
+#endif    
 #ifdef DEBUG_STEPCOUNT
     static long totalStepsRemaining;
 #endif
@@ -652,6 +658,9 @@ public:
     static void resetTransformationMatrix(bool silent);
     static void buildTransformationMatrix(float h1,float h2,float h3);
 #endif
+#endif
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    static void correctZThreadLead(float z, float &correctZ);
 #endif
 #if FEATURE_MEMORY_POSITION
     static void MemoryPosition();

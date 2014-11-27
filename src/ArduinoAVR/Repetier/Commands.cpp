@@ -1506,6 +1506,19 @@ void Commands::executeGCode(GCode *com)
             Com::printFLN(Com::tComma,Printer::currentDeltaPositionSteps[Z_AXIS]);
 #endif // NONLINEAR_SYSTEM
             break;*/
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+        case 97:
+            if(com->hasR())
+                Printer::zThreadLeadPitch = com->R;
+            if(com->hasI())
+                Printer::zThreadLeadCorrAmount = com->I;
+            if(com->hasJ())
+                Printer::zThreadLeadCorrPhase = com->J;
+            Com::printF(PSTR("Pitch(R):"),Printer::zThreadLeadPitch);
+            Com::printF(PSTR(",Amount(I):"),Printer::zThreadLeadCorrAmount);
+            Com::printFLN(PSTR(",Phase(J):"),Printer::zThreadLeadCorrPhase);
+            break;
+#endif
         }
     }
     else if(com->hasT())      // Process T code

@@ -103,6 +103,11 @@ void EEPROM::restoreEEPROMSettingsFromConfiguration()
     Printer::backlashY = Y_BACKLASH;
     Printer::backlashZ = Z_BACKLASH;
 #endif
+#if ENABLE_BACKLASH_COMPENSATION
+    Printer::zThreadLeadPitch = Z_THREAD_LEAD_PITCH;
+    Printer::zThreadLeadCorrAmount = Z_THREAD_LEAD_CORR_AMOUNT;
+    Printer::zThreadLeadCorrPhase = Z_THREAD_LEAD_CORR_PHASE;
+#endif
     Extruder *e;
 #if NUM_EXTRUDER>0
     e = &extruder[0];
@@ -362,6 +367,15 @@ void EEPROM::storeDataIntoEEPROM(uint8_t corrupted)
     HAL::eprSetFloat(EPR_BACKLASH_Y,0);
     HAL::eprSetFloat(EPR_BACKLASH_Z,0);
 #endif
+#if ENABLE_BACKLASH_COMPENSATION
+    HAL::eprSetFloat(EPR_Z_THREAD_LEAD_PITCH,Printer::zThreadLeadPitch);
+    HAL::eprSetFloat(EPR_Z_THREAD_LEAD_CORR_AMOUNT,Printer::zThreadLeadCorrAmount);
+    HAL::eprSetFloat(EPR_Z_THREAD_LEAD_CORR_PHASE,Printer::zThreadLeadCorrPhase);
+#else
+    HAL::eprSetFloat(EPR_Z_THREAD_LEAD_PITCH,0);
+    HAL::eprSetFloat(EPR_Z_THREAD_LEAD_CORR_AMOUNT,0);
+    HAL::eprSetFloat(EPR_Z_THREAD_LEAD_CORR_PHASE,0);
+#endif
 #if FEATURE_AUTOLEVEL
     HAL::eprSetByte(EPR_AUTOLEVEL_ACTIVE,Printer::isAutolevelActive());
     for(uint8_t i=0; i<9; i++)
@@ -508,6 +522,11 @@ void EEPROM::readDataFromEEPROM()
     Printer::backlashX = HAL::eprGetFloat(EPR_BACKLASH_X);
     Printer::backlashY = HAL::eprGetFloat(EPR_BACKLASH_Y);
     Printer::backlashZ = HAL::eprGetFloat(EPR_BACKLASH_Z);
+#endif
+#if ENABLE_BACKLASH_COMPENSATION
+    Printer::zThreadLeadPitch = HAL::eprGetFloat(EPR_Z_THREAD_LEAD_PITCH);
+    Printer::zThreadLeadCorrAmount = HAL::eprGetFloat(EPR_Z_THREAD_LEAD_CORR_AMOUNT);
+    Printer::zThreadLeadCorrPhase = HAL::eprGetFloat(EPR_Z_THREAD_LEAD_CORR_PHASE);
 #endif
 #if FEATURE_AUTOLEVEL
     if(version>2)
@@ -713,6 +732,11 @@ void EEPROM::writeSettings()
     writeFloat(EPR_BACKLASH_X,Com::tEPRXBacklash);
     writeFloat(EPR_BACKLASH_Y,Com::tEPRYBacklash);
     writeFloat(EPR_BACKLASH_Z,Com::tEPRZBacklash);
+#endif
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    writeFloat(EPR_Z_THREAD_LEAD_PITCH,Com::tEPRzThreadLeadPitch);
+    writeFloat(EPR_Z_THREAD_LEAD_CORR_AMOUNT,Com::tEPRzThreadLeadCorrAmount);
+    writeFloat(EPR_Z_THREAD_LEAD_CORR_PHASE,Com::tEPRzThreadLeadCorrPhase);
 #endif
 
 #ifdef RAMP_ACCELERATION

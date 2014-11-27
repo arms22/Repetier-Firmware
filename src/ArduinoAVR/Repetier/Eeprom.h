@@ -74,6 +74,9 @@ have problems with other modules using the eeprom */
 #define EPR_BACKLASH_X            157
 #define EPR_BACKLASH_Y            161
 #define EPR_BACKLASH_Z            165
+#define EPR_Z_THREAD_LEAD_PITCH          169
+#define EPR_Z_THREAD_LEAD_CORR_AMOUNT    173
+#define EPR_Z_THREAD_LEAD_CORR_PHASE     177
 
 #define EPR_Z_PROBE_X_OFFSET      800
 #define EPR_Z_PROBE_Y_OFFSET      804

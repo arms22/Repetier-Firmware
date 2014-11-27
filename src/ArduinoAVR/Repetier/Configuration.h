@@ -1107,7 +1107,7 @@ matches, the stored values are used to overwrite the settings.
 IMPORTANT: With mode <>0 some changes in Configuration.h are not set any more, as they are
            taken from the EEPROM.
 */
-#define EEPROM_MODE 1
+#define EEPROM_MODE 2
 
 
 /**************** duplicate motor driver ***************
@@ -1198,6 +1198,12 @@ is always running and is not hung up for some unknown reason. */
 #define FEATURE_BABYSTEPPING 0
 /* If you have a threaded rod, you want a higher multiplicator to see an effect. Limit value to 50 or you get easily overflows.*/
 #define BABYSTEP_MULTIPLICATOR 1
+
+/* Allow to Z thread compenstate */
+#define ENABLE_Z_THREAD_LEAD_CORRECTION true
+#define Z_THREAD_LEAD_PITCH 0.8
+#define Z_THREAD_LEAD_CORR_AMOUNT 0.0
+#define Z_THREAD_LEAD_CORR_PHASE 0
 
 /* Define a pin to tuen light on/off */
 #define CASE_LIGHTS_PIN -1

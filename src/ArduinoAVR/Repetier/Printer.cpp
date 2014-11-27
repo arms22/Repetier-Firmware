@@ -131,6 +131,12 @@ float Printer::backlashY;
 float Printer::backlashZ;
 uint8_t Printer::backlashDir;
 #endif
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+float Printer::zThreadLeadPitch;
+float Printer::zThreadLeadCorrAmount;
+float Printer::zThreadLeadCorrPhase;
+float Printer::zThreadLeadCurPhaseAmount;
+#endif
 #ifdef DEBUG_STEPCOUNT
 long Printer::totalStepsRemaining;
 #endif
@@ -334,6 +340,9 @@ void Printer::updateAdvanceFlags()
 
 void Printer::moveTo(float x,float y,float z,float e,float f)
 {
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    Printer::zThreadLeadCurPhaseAmount = 0;
+#endif
     if(x != IGNORE_COORDINATE)
         destinationSteps[X_AXIS] = (x + Printer::offsetX) * axisStepsPerMM[X_AXIS];
     if(y != IGNORE_COORDINATE)
@@ -372,6 +381,9 @@ void Printer::moveToReal(float x,float y,float z,float e,float f)
         x += Printer::offsetX;
         y += Printer::offsetY;
     }
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    correctZThreadLead(z, z);
+#endif
     if(x != IGNORE_COORDINATE)
         destinationSteps[X_AXIS] = floor(x * axisStepsPerMM[X_AXIS] + 0.5);
     if(y != IGNORE_COORDINATE)
@@ -402,6 +414,9 @@ void Printer::updateCurrentPosition(bool copyLastCmd)
     currentPosition[X_AXIS] = (float)(currentPositionSteps[X_AXIS])*invAxisStepsPerMM[X_AXIS];
     currentPosition[Y_AXIS] = (float)(currentPositionSteps[Y_AXIS])*invAxisStepsPerMM[Y_AXIS];
     currentPosition[Z_AXIS] = (float)(currentPositionSteps[Z_AXIS])*invAxisStepsPerMM[Z_AXIS];
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    currentPosition[Z_AXIS] -= Printer::zThreadLeadCurPhaseAmount;
+#endif
 #if FEATURE_AUTOLEVEL && FEATURE_Z_PROBE
     if(isAutolevelActive())
         transformFromPrinter(currentPosition[X_AXIS],currentPosition[Y_AXIS],currentPosition[Z_AXIS],currentPosition[X_AXIS],currentPosition[Y_AXIS],currentPosition[Z_AXIS]);
@@ -457,6 +472,9 @@ uint8_t Printer::setDestinationStepsFromGCode(GCode *com)
         y = lastCmdPos[Y_AXIS] + Printer::offsetY;
         z = lastCmdPos[Z_AXIS];
     }
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    correctZThreadLead(z, z);
+#endif
     long xSteps = static_cast<long>(floor(x * axisStepsPerMM[X_AXIS] + 0.5));
     long ySteps = static_cast<long>(floor(y * axisStepsPerMM[Y_AXIS] + 0.5));
     long zSteps = static_cast<long>(floor(z * axisStepsPerMM[Z_AXIS] + 0.5));
@@ -784,6 +802,12 @@ void Printer::setup()
     backlashZ = Z_BACKLASH;
     backlashDir = 0;
 #endif
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+    zThreadLeadPitch = Z_THREAD_LEAD_PITCH;
+    zThreadLeadCorrAmount = Z_THREAD_LEAD_CORR_AMOUNT;
+    zThreadLeadCorrPhase = Z_THREAD_LEAD_CORR_PHASE;
+    zThreadLeadCurPhaseAmount = 0;
+#endif
 #if defined(USE_ADVANCE)
     extruderStepsNeeded = 0;
 #endif
@@ -1091,6 +1115,9 @@ void Printer::homeZAxis()
         currentPositionSteps[Z_AXIS] = (Z_HOME_DIR == -1) ? zMinSteps : zMaxSteps;
 #if DRIVE_SYSTEM==4
         currentDeltaPositionSteps[Z_AXIS] = currentPositionSteps[Z_AXIS];
+#endif
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+        Printer::zThreadLeadCurPhaseAmount = 0;
 #endif
     }
 }
@@ -1404,4 +1431,21 @@ void Printer::buildTransformationMatrix(float h1,float h2,float h3)
 }
 #endif
 
+#endif
+
+#if ENABLE_Z_THREAD_LEAD_CORRECTION
+void Printer::correctZThreadLead(float z, float &correctZ)
+{
+    if(Printer::zThreadLeadCorrAmount > 0)
+    {
+        float phase = 360.0 * fmod(z, Printer::zThreadLeadPitch) / Printer::zThreadLeadPitch;
+        float amount = Printer::zThreadLeadCorrAmount * sin((phase + Printer::zThreadLeadCorrPhase) * M_PI / 180.0);
+        correctZ = z + amount;
+        // Com::printF(PSTR("z: "), z);
+        // Com::printF(PSTR(" z-correct: "), correctZ);
+        // Com::printF(PSTR(" amount: "), amount);
+        // Com::printFLN(PSTR(" phase: "), phase);
+        Printer::zThreadLeadCurPhaseAmount = amount;
+    }
+}
 #endif
