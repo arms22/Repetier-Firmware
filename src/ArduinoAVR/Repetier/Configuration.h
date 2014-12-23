@@ -1297,9 +1297,9 @@ is always running and is not hung up for some unknown reason. */
 /* Z-Probing */
 
 #define FEATURE_Z_PROBE 1
-#define Z_PROBE_PIN 63
+#define Z_PROBE_PIN 2
 #define Z_PROBE_PULLUP 1
-#define Z_PROBE_ON_HIGH 1
+#define Z_PROBE_ON_HIGH 0
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_BED_DISTANCE 5.0 // Higher than max bed level distance error in mm
@@ -1308,12 +1308,12 @@ is always running and is not hung up for some unknown reason. */
 // This is needful if you have the probe trigger by hand.
 #define Z_PROBE_WAIT_BEFORE_TEST 0
 /** Speed of z-axis in mm/s when probing */
-#define Z_PROBE_SPEED 2
-#define Z_PROBE_XY_SPEED 150
+#define Z_PROBE_SPEED 1
+#define Z_PROBE_XY_SPEED 80
 #define Z_PROBE_SWITCHING_DISTANCE 1.5 // Distance to safely switch off probe after it was activated
-#define Z_PROBE_REPETITIONS 5 // Repetitions for probing at one point.
+#define Z_PROBE_REPETITIONS 3 // Repetitions for probing at one point.
 /** The height is the difference between activated probe position and nozzle height. */
-#define Z_PROBE_HEIGHT 39.91
+#define Z_PROBE_HEIGHT 0
 /** These scripts are run before resp. after the z-probe is done. Add here code to activate/deactivate probe if needed. */
 #define Z_PROBE_START_SCRIPT ""
 #define Z_PROBE_FINISHED_SCRIPT ""
@@ -1322,13 +1322,13 @@ is always running and is not hung up for some unknown reason. */
    This feature requires a working z-probe and you should have z-endstop at the top not at the bottom.
    The same 3 points are used for the G29 command.
 */
-#define FEATURE_AUTOLEVEL 0
-#define Z_PROBE_X1 100
-#define Z_PROBE_Y1 20
-#define Z_PROBE_X2 160
-#define Z_PROBE_Y2 170
-#define Z_PROBE_X3 20
-#define Z_PROBE_Y3 170
+#define FEATURE_AUTOLEVEL 1
+#define Z_PROBE_X1 60
+#define Z_PROBE_Y1 0
+#define Z_PROBE_X2 120
+#define Z_PROBE_Y2 105
+#define Z_PROBE_X3 0
+#define Z_PROBE_Y3 105
 
 /* DISTORTION_CORRECTION compensates the distortion caused by mechanical imprecisions of nonlinear (i.e. DELTA) printers
  * assumes that the floor is plain (i.e. glass plate)
