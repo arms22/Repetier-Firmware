@@ -1300,7 +1300,20 @@ void Commands::executeGCode(GCode *com)
             changeFeedrateMultiply(com->getS(100));
             break;
         case 221: // M221 S<Extrusion flow multiplier in percent>
+#if ENABLE_ACTIVE_FLOWRATE_CONTROL
+            //M221 I<Pitch in mm> J<Gain in ratio> R<Phase in degrees>
+            //ex. M221 I40 J0.2 R0
+            if(com->hasI())
+                Printer::afcPitch = com->I;
+            if(com->hasJ())
+                Printer::afcGain = com->J;
+            if(com->hasR())
+                Printer::afcInitialPhase = com->R;
+            if(com->hasS())
+                changeFlowateMultiply(com->getS(100));
+#else
             changeFlowateMultiply(com->getS(100));
+#endif
             break;
 #ifdef USE_ADVANCE
         case 223: // Extruder interrupt test

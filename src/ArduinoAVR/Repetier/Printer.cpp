@@ -114,6 +114,11 @@ float Printer::zLength;
 float Printer::zMin;
 float Printer::feedrate;                   ///< Last requested feedrate.
 int Printer::feedrateMultiply;             ///< Multiplier for feedrate in percent (factor 1 = 100)
+#if ENABLE_ACTIVE_FLOWRATE_CONTROL
+float Printer::afcPitch;
+float Printer::afcGain;
+float Printer::afcInitialPhase;
+#endif
 unsigned int Printer::extrudeMultiply;     ///< Flow multiplier in percdent (factor 1 = 100)
 float Printer::maxJerk;                    ///< Maximum allowed jerk in mm/s
 #if DRIVE_SYSTEM!=3
@@ -751,6 +756,11 @@ void Printer::setup()
 #endif // FEATURE_AUTOLEVEL
     feedrate = 50; ///< Current feedrate in mm/s.
     feedrateMultiply = 100;
+#if ENABLE_ACTIVE_FLOWRATE_CONTROL
+    afcPitch = 50.0;
+    afcGain = 0.0;
+    afcInitialPhase = 0.0;
+#endif
     extrudeMultiply = 100;
     lastCmdPos[X_AXIS] = lastCmdPos[Y_AXIS] = lastCmdPos[Z_AXIS] = 0;
 #ifdef USE_ADVANCE

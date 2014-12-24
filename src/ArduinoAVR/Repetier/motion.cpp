@@ -163,6 +163,15 @@ void PrintLine::queueCartesianMove(uint8_t check_endstops,uint8_t pathOptimize)
             p->delta[axis] = -p->delta[axis];
         if(axis == E_AXIS && Printer::extrudeMultiply!=100)
             p->delta[E_AXIS] = (long)((p->delta[E_AXIS] * (float)Printer::extrudeMultiply) * 0.01f);
+#if ENABLE_ACTIVE_FLOWRATE_CONTROL
+        if(axis == E_AXIS && (Printer::afcGain > 0.0)
+        {
+            float dst = Printer::destinationSteps[axis] * Printer::invAxisStepsPerMM[axis];
+            float phase = 360.0 * fmod(dst, Printer::afcPitch) / Printer::afcPitch;
+            float gain = 1.0 + Printer::afcGain * sin((phase + Printer::afcInitialPhase) * M_PI / 180.0);
+            p->delta[E_AXIS] = (long)(p->delta[E_AXIS] * gain);
+        }
+#endif
         axis_diff[axis] = p->delta[axis] * Printer::invAxisStepsPerMM[axis];
         if(p->delta[axis]) p->setMoveOfAxis(axis);
         Printer::currentPositionSteps[axis] = Printer::destinationSteps[axis];

@@ -129,6 +129,11 @@ public:
     static float zMin;
     static float feedrate;                   ///< Last requested feedrate.
     static int feedrateMultiply;             ///< Multiplier for feedrate in percent (factor 1 = 100)
+#if ENABLE_ACTIVE_FLOWRATE_CONTROL
+    static float afcPitch;
+    static float afcGain;
+    static float afcInitialPhase;
+#endif
     static unsigned int extrudeMultiply;     ///< Flow multiplier in percdent (factor 1 = 100)
     static float maxJerk;                    ///< Maximum allowed jerk in mm/s
 #if DRIVE_SYSTEM != 3
