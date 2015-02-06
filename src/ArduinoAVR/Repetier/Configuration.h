@@ -152,11 +152,11 @@ If a motor turns in the wrong direction change INVERT_X_DIR or INVERT_Y_DIR.
 /** \brief Number of steps for a 1mm move in x direction.
 For xy gantry use 2*belt moved!
 Overridden if EEPROM activated. */
-#define XAXIS_STEPS_PER_MM 160
+#define XAXIS_STEPS_PER_MM 80
 /** \brief Number of steps for a 1mm move in y direction.
 For xy gantry use 2*belt moved!
 Overridden if EEPROM activated.*/
-#define YAXIS_STEPS_PER_MM 200
+#define YAXIS_STEPS_PER_MM 100
 /** \brief Number of steps for a 1mm move in z direction  Overridden if EEPROM activated.*/
 #define ZAXIS_STEPS_PER_MM 4000
 #endif
@@ -893,14 +893,14 @@ Mega. Used only for nonlinear systems like delta or tuga. */
     The axis order in all axis related arrays is X, Y, Z
      Overridden if EEPROM activated.
     */
-#define MAX_FEEDRATE_X 250
-#define MAX_FEEDRATE_Y 250
-#define MAX_FEEDRATE_Z 3
+#define MAX_FEEDRATE_X 300
+#define MAX_FEEDRATE_Y 300
+#define MAX_FEEDRATE_Z 4
 
 /** Home position speed in mm/s. Overridden if EEPROM activated. */
 #define HOMING_FEEDRATE_X 60
 #define HOMING_FEEDRATE_Y 60
-#define HOMING_FEEDRATE_Z 3
+#define HOMING_FEEDRATE_Z 4
 
 /** Set order of axis homing. Use HOME_ORDER_XYZ and replace XYZ with your order. */
 #define HOMING_ORDER HOME_ORDER_XYZ
