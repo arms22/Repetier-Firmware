@@ -287,7 +287,7 @@ Values for starts:
 The precise values may differ for different nozzle/resistor combination.
  Overridden if EEPROM activated.
 */
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 240
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 150
 /** \brief lower value for integral part
 
 The I state should converge to the exact heater output needed for the target temperature.
@@ -295,14 +295,14 @@ To prevent a long deviation from the target zone, this value limits the lower va
 A good start is 30 lower then the optimal value. You need to leave room for cooling.
  Overridden if EEPROM activated.
 */
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 60
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 30
 /** P-gain.  Overridden if EEPROM activated. */
-#define EXT0_PID_PGAIN_OR_DEAD_TIME   21.49
+#define EXT0_PID_PGAIN_OR_DEAD_TIME   4.75
 /** I-gain. Overridden if EEPROM activated.
 */
-#define EXT0_PID_I   1.69
+#define EXT0_PID_I   0.33
 /** Dgain.  Overridden if EEPROM activated.*/
-#define EXT0_PID_D 68.31
+#define EXT0_PID_D 17.26
 // maximum time the heater is can be switched on. Max = 255.  Overridden if EEPROM activated.
 #define EXT0_PID_MAX 255
 /** \brief Faktor for the advance algorithm. 0 disables the algorithm.  Overridden if EEPROM activated.
@@ -1325,9 +1325,9 @@ is always running and is not hung up for some unknown reason. */
 #define FEATURE_AUTOLEVEL 1
 #define Z_PROBE_X1 60
 #define Z_PROBE_Y1 0
-#define Z_PROBE_X2 120
+#define Z_PROBE_X2 115
 #define Z_PROBE_Y2 105
-#define Z_PROBE_X3 0
+#define Z_PROBE_X3 5
 #define Z_PROBE_Y3 105
 
 /* DISTORTION_CORRECTION compensates the distortion caused by mechanical imprecisions of nonlinear (i.e. DELTA) printers
