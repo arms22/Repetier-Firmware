@@ -171,8 +171,8 @@ Overridden if EEPROM activated.*/
 #define EXT0_X_OFFSET 0
 #define EXT0_Y_OFFSET 0
 // for skeinforge 40 and later, steps to pull the plasic 1 mm inside the extruder, not out.  Overridden if EEPROM activated.
-//#define EXT0_STEPS_PER_MM 906.41593734308926
-#define EXT0_STEPS_PER_MM 870.159299849365 //96%
+#define EXT0_STEPS_PER_MM 148.157 // Direct Drive
+//#define EXT0_STEPS_PER_MM 918.480 // Geard
 
 // What type of sensor is used?
 // 1 is 100k thermistor (Epcos B57560G0107F000 - RepRap-Fab.org and many other)
@@ -236,7 +236,7 @@ Values for starts:
 The precise values may differ for different nozzle/resistor combination.
  Overridden if EEPROM activated.
 */
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 150
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
 /** \brief lower value for integral part
 
 The I state should converge to the exact heater output needed for the target temperature.
